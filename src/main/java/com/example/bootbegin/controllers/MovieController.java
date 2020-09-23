@@ -2,6 +2,7 @@ package com.example.bootbegin.controllers;
 
 import com.example.bootbegin.dao.MovieDao;
 import com.example.bootbegin.entiti.Movie;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +42,7 @@ public class MovieController {
             return movie;
         }
         else {
-            return null;
+            throw new NullPointerException("no such Movie with Id " + id);
         }
 
     }

@@ -1,4 +1,4 @@
-package com.example.bootbegin.controllers;
+package com.example.bootbegin.controllersOld;
 
 import com.example.bootbegin.dao.MovieDao;
 import com.example.bootbegin.entiti.Movie;

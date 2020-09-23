@@ -1,48 +1,44 @@
 package com.example.bootbegin.controllers;
 
-import com.example.bootbegin.entiti.User;
+import com.example.bootbegin.dto.request.UserRequest;
+import com.example.bootbegin.dto.response.UserResponse;
+import com.example.bootbegin.services.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
+@RequestMapping("/users")
+@RequiredArgsConstructor
 public class UserController {
-    private final List<User> users = new ArrayList<>();
+//    private final List<User> users = new ArrayList<>();
+    @Autowired
+    public UserService userService;
 
-    @GetMapping("/users")
-    public List<User> getAll () {
-        return users;
-    }
+    @GetMapping
+    public List<UserResponse> getAll(){return userService.getAll();}
 
-    @GetMapping("/users/{id}")
-    public User getById (@PathVariable int id) {
-        return users.stream()
-                .filter(user -> user.getId() == id)
-                .findFirst()
-                .orElseThrow(() -> new NullPointerException("no such User"));
+    @GetMapping("/{id}")
+    public UserResponse getById (@PathVariable int id) {
+        return userService.getById(id);
     }
-    @PostMapping("/users")
-    public User create (@RequestBody User user) {
-        users.add(user);
-        return user;
+    @PostMapping
+    public UserResponse create (@RequestBody UserRequest user) {
+        return userService.save(user);
     }
-    @DeleteMapping("/users/{id}")
-    public boolean delete (@PathVariable int id) {
-        return users.removeIf(user -> user.getId() == id);
+    @PutMapping("/{id}")
+    public UserResponse edit (@PathVariable int id, @RequestBody UserRequest user) {
+        return userService.edit(id, user);
     }
-    @DeleteMapping("/users")
-    public void deleteAll () {
-        users.clear();
-    }
-    @PutMapping("/users/{id}")
-    public User edit (@PathVariable int id, @RequestBody User user) {
-        users.stream()
-                .filter(u -> u.getId() == id)
-                .forEach(u -> {
-                    u.setName(user.getName());
-                    u.setSurName(user.getSurName());
-                });
-        return getById(id);
-    }
+//    @DeleteMapping("/{id}")
+//    public boolean delete (@PathVariable int id) {
+//        return users.removeIf(user -> user.getId() == id);
+//    }
+//    @DeleteMapping
+//    public void deleteAll () {
+//        users.clear();
+//    }
 }
