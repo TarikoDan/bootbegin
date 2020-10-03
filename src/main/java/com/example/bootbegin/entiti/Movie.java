@@ -1,6 +1,5 @@
 package com.example.bootbegin.entiti;
 
-import com.example.bootbegin.dao.MovieDao;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
