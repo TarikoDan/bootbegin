@@ -56,12 +56,14 @@ public class MovieController {
             }
         }
     }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteByID (@PathVariable int id) {
         movieDao.deleteById(id);
     }
-    @DeleteMapping("/clea")
+
+    @DeleteMapping("/clear")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void clearAll() {
         movieDao.deleteAllInBatch();

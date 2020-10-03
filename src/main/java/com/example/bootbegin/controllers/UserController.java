@@ -1,44 +1,49 @@
 package com.example.bootbegin.controllers;
 
-import com.example.bootbegin.dto.request.UserRequest;
-import com.example.bootbegin.dto.response.UserResponse;
-import com.example.bootbegin.services.UserService;
-import lombok.RequiredArgsConstructor;
+import com.example.bootbegin.dao.UserDAO;
+import com.example.bootbegin.entiti.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-@RequiredArgsConstructor
 public class UserController {
-//    private final List<User> users = new ArrayList<>();
+
     @Autowired
-    public UserService userService;
+    public UserDAO userDAO;
 
     @GetMapping
-    public List<UserResponse> getAll(){return userService.getAll();}
+    public List<User> getAll(){return userDAO.findAll();}
 
     @GetMapping("/{id}")
-    public UserResponse getById (@PathVariable int id) {
-        return userService.getById(id);
+    public User getById (@PathVariable int id) {
+        return userDAO
+                .findById(id)
+                .orElseThrow(() -> new NullPointerException("no such User with Id " + id));
     }
+
     @PostMapping
-    public UserResponse create (@RequestBody UserRequest user) {
-        return userService.save(user);
+    public User create (@RequestBody User user) {
+        return userDAO.save(user);
     }
+
     @PutMapping("/{id}")
-    public UserResponse edit (@PathVariable int id, @RequestBody UserRequest user) {
-        return userService.edit(id, user);
+    public User edit (@PathVariable int id, @RequestBody User user) {
+        User one = userDAO.getOne(id);
+        one.setName(user.getName());
+        one.setSurName(user.getSurName());
+        return one;
     }
-//    @DeleteMapping("/{id}")
-//    public boolean delete (@PathVariable int id) {
-//        return users.removeIf(user -> user.getId() == id);
-//    }
-//    @DeleteMapping
-//    public void deleteAll () {
-//        users.clear();
-//    }
+
+    @DeleteMapping("/{id}")
+    public void delete (@PathVariable int id) {
+        userDAO.deleteById(id);
+    }
+
+    @DeleteMapping
+    public void deleteAll () {
+        userDAO.deleteAll();
+    }
 }
