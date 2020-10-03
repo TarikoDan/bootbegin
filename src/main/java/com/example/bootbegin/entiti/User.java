@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,14 +18,5 @@ public class User {
     int id;
     String name;
     String surName;
-    @Column(nullable = false, unique = true)
-    String nickName;
-    Date birthday;
 
-    public void changeValues(User newUser) {
-        this.name = newUser.getName();
-        this.surName = newUser.getSurName();
-        this.nickName = newUser.getNickName();
-        this.birthday = newUser.getBirthday();
-    }
 }

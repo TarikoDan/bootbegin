@@ -1,10 +1,10 @@
 package com.example.bootbegin.controllers;
 
-import com.example.bootbegin.dto.request.UserRequest;
-import com.example.bootbegin.dto.response.UserResponse;
+import com.example.bootbegin.entiti.User;
 import com.example.bootbegin.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -14,31 +14,41 @@ import java.util.List;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
-//    private final List<User> users = new ArrayList<>();
+
     @Autowired
     public UserService userService;
 
     @GetMapping
-    public List<UserResponse> getAll(){return userService.getAll();}
+    public List<User> getAll(){return userService.getAll();}
 
     @GetMapping("/{id}")
-    public UserResponse getById (@PathVariable int id) {
+    public User getById (@PathVariable int id) {
         return userService.getById(id);
     }
+
     @PostMapping
-    public UserResponse create (@RequestBody UserRequest user) {
+    public User create (@RequestBody User user) {
         return userService.save(user);
     }
+
     @PutMapping("/{id}")
-    public UserResponse edit (@PathVariable int id, @RequestBody UserRequest user) {
+    public User edit (@PathVariable int id, @RequestBody User user) {
         return userService.edit(id, user);
     }
-//    @DeleteMapping("/{id}")
-//    public boolean delete (@PathVariable int id) {
-//        return users.removeIf(user -> user.getId() == id);
-//    }
-//    @DeleteMapping
-//    public void deleteAll () {
-//        users.clear();
-//    }
+
+    @DeleteMapping
+    public void deleteAll () {
+        userService.deleteAll();
+    }
+
+    @DeleteMapping("/{exp}")
+    @Transactional
+    public String deleteBy(@PathVariable String exp) {
+        try {
+            int i = Integer.parseInt(exp);
+            return userService.DeleteById(i);
+        }catch (NumberFormatException e) {
+            return userService.DeleteByName(exp);
+        }
+    }
 }

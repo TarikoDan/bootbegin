@@ -1,11 +1,12 @@
 package com.example.bootbegin.entiti;
 
-import com.example.bootbegin.dao.MovieDao;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,7 +17,9 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(nullable = false, length = 270)
+    @NotBlank               /*Predefinded validators*/
     private String title;
+    @Positive               /*Predefinded validators*/
     private int duration;
 
 }
