@@ -55,7 +55,13 @@ public class MovieService implements IMovieService{
     }
 
     @Override
-    public void deleteById(int id) {
-        movieDao.deleteById(id);
+    public String deleteById(int id) {
+        boolean exists = movieDao.existsById(id);
+        if (exists) {
+            movieDao.deleteById(id);
+            return "Movie with Id: " + id + " was deleted";
+        }else {
+            return "No such Movie with Id: " + id;
+        }
     }
 }

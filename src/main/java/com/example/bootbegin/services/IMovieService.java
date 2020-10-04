@@ -16,5 +16,5 @@ public interface IMovieService {
 
     void deleteAll();
 
-    void deleteById(int id);
+    String deleteById(int id);
 }

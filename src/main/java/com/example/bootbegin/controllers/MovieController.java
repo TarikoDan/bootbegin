@@ -1,6 +1,5 @@
 package com.example.bootbegin.controllers;
 
-import com.example.bootbegin.dao.MovieDao;
 import com.example.bootbegin.entiti.Movie;
 import com.example.bootbegin.services.IMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,32 +13,32 @@ import java.util.List;
 @RequestMapping("/movies")
 public class MovieController {
 
-    private IMovieService movieController;
-
+    private IMovieService movieService;
 
     @Autowired
     public MovieController(IMovieService movieController) {
-        this.movieController = movieController;
+        this.movieService = movieController;
     }
 
     @GetMapping
     public List<Movie> getAllMovies() {
-        return movieController.getAll();
+        return movieService.getAll();
     }
 
     @GetMapping(value = "/{id}")
     public Movie getMovie(@PathVariable int id) {
-        return movieController.getById(id);
+        return movieService.getById(id);
     }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Movie insertMovie(@Valid @RequestBody Movie movie) {
-        return movieController.create(movie);
+        return movieService.create(movie);
     }
 
     @PutMapping("/{id}")
     public Movie editMovie (@Valid @PathVariable int id, @Valid @RequestBody Movie movie) {
-        return movieController.edit(id, movie);
+        return movieService.edit(id, movie);
     }
 
 //    @DeleteMapping
@@ -55,14 +54,14 @@ public class MovieController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteByID (@PathVariable int id) {
-        movieController.deleteById(id);
+    public String deleteByID (@PathVariable int id) {
+        return movieService.deleteById(id);
     }
 
-    @DeleteMapping("/clea")
+    @DeleteMapping("/clear")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void clearAll() {
-        movieController.deleteAll();
+        movieService.deleteAll();
     }
 
 }

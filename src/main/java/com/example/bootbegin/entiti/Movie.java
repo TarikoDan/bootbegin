@@ -1,5 +1,6 @@
 package com.example.bootbegin.entiti;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import javax.validation.constraints.Positive;
 @NoArgsConstructor
 @Data
 @Entity
+@JsonIgnoreProperties(value = "hibernateLazyInitializer")
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

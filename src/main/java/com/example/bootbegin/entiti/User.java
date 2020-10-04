@@ -1,5 +1,6 @@
 package com.example.bootbegin.entiti;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @Data
 @Builder
 @Entity
+@JsonIgnoreProperties(value = "hibernateLazyInitializer")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
