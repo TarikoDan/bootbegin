@@ -2,21 +2,27 @@ package com.example.bootbegin.controllers;
 
 import com.example.bootbegin.dto.request.UserRequest;
 import com.example.bootbegin.dto.response.UserResponse;
-import com.example.bootbegin.services.UserService;
+import com.example.bootbegin.services.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
-//    private final List<User> users = new ArrayList<>();
     @Autowired
-    public UserService userService;
+    public IUserService userService;
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserResponse create (@RequestBody @Valid UserRequest user) {
+        return userService.save(user);
+    }
 
     @GetMapping
     public List<UserResponse> getAll(){return userService.getAll();}
@@ -25,20 +31,32 @@ public class UserController {
     public UserResponse getById (@PathVariable int id) {
         return userService.getById(id);
     }
-    @PostMapping
-    public UserResponse create (@RequestBody UserRequest user) {
-        return userService.save(user);
-    }
+
     @PutMapping("/{id}")
-    public UserResponse edit (@PathVariable int id, @RequestBody UserRequest user) {
+    public UserResponse edit (@PathVariable int id, @RequestBody @Valid UserRequest user) {
         return userService.edit(id, user);
     }
-//    @DeleteMapping("/{id}")
-//    public boolean delete (@PathVariable int id) {
-//        return users.removeIf(user -> user.getId() == id);
-//    }
+
 //    @DeleteMapping
-//    public void deleteAll () {
-//        users.clear();
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    public void clear() {
+//
 //    }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void remove (@RequestParam String nickName) {
+        if (nickName != null) {
+            userService.remove(nickName);
+        }else {
+            userService.deleteAll();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteById (@PathVariable int id ) {
+        userService.deleteById(id);
+    }
+
 }

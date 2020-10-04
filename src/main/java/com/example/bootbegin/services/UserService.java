@@ -6,6 +6,7 @@ import com.example.bootbegin.entiti.User;
 import com.example.bootbegin.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -16,10 +17,11 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class UserService {
+public class UserService implements IUserService{
     @Autowired
     private final UserRepository userRepo;
 
+    @Override
     public UserResponse save(UserRequest user) {
 
         User userDB = userRequestToUser(user);
@@ -27,6 +29,8 @@ public class UserService {
 
         return userToUserResp(userDB);
     }
+
+    @Override
     public List<UserResponse> getAll () {
         List<UserResponse> users = new ArrayList<>();
         userRepo.findAll()
@@ -35,25 +39,56 @@ public class UserService {
                 ));
         return users;
     }
+
+    @Override
     public UserResponse getById(int id) {
         User user = userRepo.findById(id)
-                .orElseThrow(() -> new NullPointerException("no such User with id" + id));
+                .orElseThrow(() -> new NullPointerException("no such User with Id: " + id));
         return userToUserResp(user);
     }
 
+    @Override
     public UserResponse edit(int id, UserRequest user) {
-        User foundedUser = userRepo.getOne(id);
-//                .orElseThrow(() -> new NullPointerException("no such User with id" + id));
-        User newUser = userRequestToUser(user);
-        foundedUser.changeValues(newUser);
-        userRepo.flush();
-        return userToUserResp(foundedUser);
-    };
+        if (userRepo.existsById(id)) {
+            User foundedUser = userRepo.getOne(id);
+            User newUser = userRequestToUser(user);
+            foundedUser.changeValues(newUser);
+            userRepo.flush();
+            return userToUserResp(foundedUser);
+        }else {
+            throw new NullPointerException("no such User with Id: " + id);
+        }
+    }
+
+    @Override
+    public void deleteById(int id) {
+        if (userRepo.existsById(id)) {
+            userRepo.deleteById(id);
+        }else {
+            throw new NullPointerException("no such User with Id: " + id);
+        }
+    }
+
+    @Override
+    public void deleteAll() {
+        userRepo.deleteAll();
+    }
+
+    @Override
+    public void remove(String nickName) {
+        if (userRepo.existsByNickName(nickName)) {
+            userRepo.removeUserByNickName(nickName);
+        }else {
+            throw new NullPointerException("no such User with NickName: " + nickName);
+        }
+    }
 
     private String formatDateToDay(Date date) {
         SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
         return dayFormat.format(date);
+
     }
+
     private UserResponse userToUserResp(User user) {
         return UserResponse.builder()
                 .id(user.getId())
@@ -64,14 +99,26 @@ public class UserService {
                 .build();
     }
 
-    private User userRequestToUser(UserRequest user) {
+    private Date birthDate(UserRequest user) {
+        String regEX = "((?:19|20)\\\\d\\\\d)/(0?[1-9]|1[012])/(0?[1-9]|[12][0-9]|3[01])";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Date birthDate = null;  /*creating birth Date*/
-        try {
-            birthDate = dateFormat.parse(user.getBirthDay());
-        } catch (ParseException e) {
-            e.printStackTrace();
+        String birthDay = user.getBirthDay();
+        if ((birthDay.length() == 10) && birthDay.matches(regEX)) {
+            try {
+                birthDate = dateFormat.parse(birthDay);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        } else {
+            throw new ExpressionException("Bad Date Format -> must be: 'yyyy/MM/dd' .");
         }
+        return birthDate;
+    }
+
+    private User userRequestToUser(UserRequest user) {
+        String birthDay = user.getBirthDay();
+        Date birthDate = birthDate(user);
 
         String nickName = user.getName()  /*creating nickName*/
                 .strip()
@@ -83,7 +130,7 @@ public class UserService {
                                 .toUpperCase()
                                 .substring(0, 3)
                 ).concat(
-                        user.getBirthDay().substring(0,4)
+                        birthDay.substring(0,4)
                 );
         User userDb = User.builder()    /*creating new User*/
                 .name(user.getName())
@@ -93,7 +140,6 @@ public class UserService {
                 .build();
 
         return userDb;
-
     }
 
 }
