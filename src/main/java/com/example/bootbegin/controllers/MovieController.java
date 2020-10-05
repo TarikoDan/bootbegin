@@ -4,6 +4,7 @@ import com.example.bootbegin.entiti.Movie;
 import com.example.bootbegin.services.IMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -43,6 +44,7 @@ public class MovieController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Transactional
     public void remove (@RequestBody Movie movie) {
         movieService.remove(movie);
     }

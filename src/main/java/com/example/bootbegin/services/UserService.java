@@ -100,11 +100,12 @@ public class UserService implements IUserService{
     }
 
     private Date birthDate(UserRequest user) {
-        String regEX = "((?:19|20)\\\\d\\\\d)/(0?[1-9]|1[012])/(0?[1-9]|[12][0-9]|3[01])";
+//        String regEX = "((?:19|20)\\\\d\\\\d)/(0?[1-9]|1[012])/(0?[1-9]|[12][0-9]|3[01])";
+        String regEX = "(?:(?:19|2[01])\\d\\d(?:1[02]|0[13578])(?:[0-2]\\d|3[01]))";
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Date birthDate = null;  /*creating birth Date*/
         String birthDay = user.getBirthDay();
-        if ((birthDay.length() == 10) && birthDay.matches(regEX)) {
+        if ((birthDay.length() == 10) /*&& birthDay.matches(regEX)*/) {
             try {
                 birthDate = dateFormat.parse(birthDay);
             } catch (ParseException e) {
