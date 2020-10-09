@@ -1,9 +1,10 @@
-package com.example.bootbegin.services;
+package com.example.bootbegin.services.imp;
 
 import com.example.bootbegin.dto.request.UserRequest;
 import com.example.bootbegin.dto.response.UserResponse;
 import com.example.bootbegin.entiti.User;
 import com.example.bootbegin.repository.UserRepository;
+import com.example.bootbegin.services.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.expression.ExpressionException;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class UserService implements IUserService{
+public class UserService implements IUserService {
     @Autowired
     private final UserRepository userRepo;
 

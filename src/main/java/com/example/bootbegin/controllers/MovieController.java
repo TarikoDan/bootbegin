@@ -2,9 +2,11 @@ package com.example.bootbegin.controllers;
 
 import com.example.bootbegin.entiti.Movie;
 import com.example.bootbegin.services.IMovieService;
+import com.example.bootbegin.validators.MovieValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -15,10 +17,12 @@ import java.util.List;
 public class MovieController {
 
     private final IMovieService movieService;
+    private final MovieValidator movieValidator;
 
     @Autowired
-    public MovieController(IMovieService movieService) {
+    public MovieController(IMovieService movieService, MovieValidator movieValidator) {
         this.movieService = movieService;
+        this.movieValidator = movieValidator;
     }
 
     @PostMapping
@@ -38,7 +42,7 @@ public class MovieController {
     }
 
     @PutMapping("/{id}")
-    public Movie edit (@PathVariable int id, @RequestBody Movie movie) {
+    public Movie edit (@PathVariable int id, @RequestBody @Valid Movie movie) {
         return movieService.edit(id, movie);
     }
 
@@ -59,6 +63,12 @@ public class MovieController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void clearAll() {
         movieService.deleteAll();
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder webDataBinder) {
+//        webDataBinder.addValidators(new MovieValidator()); /* 1-st method*/
+        webDataBinder.addValidators(movieValidator);        /* 2-nd method via Bean*/
     }
 
 }

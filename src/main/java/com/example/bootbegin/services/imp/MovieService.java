@@ -1,14 +1,15 @@
-package com.example.bootbegin.services;
+package com.example.bootbegin.services.imp;
 
 import com.example.bootbegin.dao.MovieDao;
 import com.example.bootbegin.entiti.Movie;
+import com.example.bootbegin.services.IMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class MovieService implements IMovieService{
+public class MovieService implements IMovieService {
     @Autowired
     private MovieDao movieDao;
 
