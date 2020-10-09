@@ -14,10 +14,10 @@ public class MovieService implements IMovieService{
 
     @Override
     public Movie create(Movie movie) {
-//        if (movie.getTitle().charAt(0) > 65 || movie.getTitle().charAt(0) < 90) {
-           if(Character.isLowerCase(movie.getTitle().charAt(0))) {
-            throw new RuntimeException("Bad first letter");
-        };
+//        if (movie.getTitle().charAt(0) > 65 || movie.getTitle().charAt(0) < 90) {     /* 1-st way*/
+//           if(Character.isLowerCase(movie.getTitle().charAt(0))) {        /* Transferred to class.Validator*/
+//            throw new RuntimeException("Title should start with capital letter");
+//        };
         return movieDao.save(movie);
     }
 
