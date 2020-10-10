@@ -2,6 +2,7 @@ package com.example.bootbegin.services.imp;
 
 import com.example.bootbegin.dao.MovieDao;
 import com.example.bootbegin.entiti.Movie;
+import com.example.bootbegin.exception.LongDurationException;
 import com.example.bootbegin.services.IMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,9 @@ public class MovieService implements IMovieService {
 
     @Override
     public Movie insert(Movie movie) {
+        if (movie.getDuration() > 300) {
+            throw new LongDurationException("Duration should be less than 300 min");
+        }
         return movieDao.save(movie);
     }
 
