@@ -1,5 +1,6 @@
 package com.example.bootbegin.entiti;
 
+import com.example.bootbegin.validator.UniqueMovieTitle;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,9 +20,10 @@ public class Movie {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(nullable = false, length = 270)
-    @NotBlank               /*Predefinded validators*/
+    @NotBlank               /*Predefined validators*/
+    @UniqueMovieTitle       /* own annotation */
     private String title;
-    @Positive               /*Predefinded validators*/
+    @Positive               /*Predefined validators*/
     private int duration;
 
 }
