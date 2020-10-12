@@ -2,6 +2,7 @@ package com.example.bootbegin.services;
 
 import com.example.bootbegin.dao.MovieDao;
 import com.example.bootbegin.entiti.Movie;
+import com.example.bootbegin.exception.LongDurationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,9 @@ public class MovieService implements IMovieService{
 //           if(Character.isLowerCase(movie.getTitle().charAt(0))) {        /* Transferred to class.Validator*/
 //            throw new RuntimeException("Title should start with capital letter");
 //        };
+        if (movie.getDuration() > 300) {
+            throw  new LongDurationException("Duration should be less than 300min");
+        }
         return movieDao.save(movie);
     }
 
