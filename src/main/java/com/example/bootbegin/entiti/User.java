@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import java.util.Date;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,7 +25,7 @@ public class User {
     String surName;
     @Column(nullable = false, unique = true)
     String nickName;
-    Date birthday;
+    LocalDate birthday;
 
     public void changeValues(User newUser) {
         this.name = newUser.getName();

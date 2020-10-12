@@ -1,5 +1,6 @@
 package com.example.bootbegin.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +15,7 @@ public class UserRequest {
     @NotBlank
     private String surName;
     @NotBlank
-//    @Pattern(regexp = "((?:19|20)\\\\d\\\\d)/(0?[1-9]|1[012])/(0?[1-9]|[12][0-9]|3[01])")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private String birthDay;
 
 }

@@ -26,4 +26,7 @@ public class Movie {
     @Positive
     private int duration;
 
+    @ManyToOne
+    private Director director;
+
 }

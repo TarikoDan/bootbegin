@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -84,11 +86,11 @@ public class UserService implements IUserService {
         }
     }
 
-    private String formatDateToDay(Date date) {
-        SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
-        return dayFormat.format(date);
-
-    }
+//    private String formatDateToDay(Date date) {
+//        SimpleDateFormat dayFormat = new SimpleDateFormat("EEEE");
+//        return dayFormat.format(date);
+//
+//    }
 
     private UserResponse userToUserResp(User user) {
         return UserResponse.builder()
@@ -96,31 +98,30 @@ public class UserService implements IUserService {
                 .name(user.getName())
                 .surName(user.getSurName())
                 .nickName(user.getNickName())
-                .dayOfBirth(formatDateToDay(user.getBirthday()))
+                .dayOfBirth(user.getBirthday().getDayOfWeek())
                 .build();
     }
 
-    private Date birthDate(UserRequest user) {
-//        String regEX = "((?:19|20)\\\\d\\\\d)/(0?[1-9]|1[012])/(0?[1-9]|[12][0-9]|3[01])";
-        String regEX = "(?:(?:19|2[01])\\d\\d(?:1[02]|0[13578])(?:[0-2]\\d|3[01]))";
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        Date birthDate = null;  /*creating birth Date*/
-        String birthDay = user.getBirthDay();
-        if ((birthDay.length() == 10) /*&& birthDay.matches(regEX)*/) {
-            try {
-                birthDate = dateFormat.parse(birthDay);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        } else {
-            throw new ExpressionException("Bad Date Format -> must be: 'yyyy/MM/dd' .");
-        }
-        return birthDate;
-    }
+//    private LocalDate birthDate(UserRequest user) {
+////        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+//        Date birthDate = null;  /*creating birth Date*/
+//        String birthDay = user.getBirthDay();
+//        if ((birthDay.length() == 10) /*&& birthDay.matches(regEX)*/) {
+//            try {
+//                birthDate = dateFormat.parse(birthDay);
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//        } else {
+//            throw new ExpressionException("Bad Date Format -> must be: 'yyyy/MM/dd' .");
+//        }
+//        return birthDate;
+//    }
 
     private User userRequestToUser(UserRequest user) {
         String birthDay = user.getBirthDay();
-        Date birthDate = birthDate(user);
+        LocalDate birthDate = LocalDate.parse(user.getBirthDay());
 
         String nickName = user.getName()  /*creating nickName*/
                 .strip()

@@ -2,6 +2,8 @@ package com.example.bootbegin.dto.response;
 
 import lombok.*;
 
+import java.time.DayOfWeek;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -15,5 +17,5 @@ public class UserResponse {
     private String surName;
     @NonNull
     private String nickName;
-    private String dayOfBirth;
+    private DayOfWeek dayOfBirth;
 }
