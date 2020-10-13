@@ -1,5 +1,6 @@
 package com.example.bootbegin.controllers;
 
+import com.example.bootbegin.dto.response.MovieResponse;
 import com.example.bootbegin.entiti.Movie;
 import com.example.bootbegin.services.IMovieService;
 import com.example.bootbegin.validators.MovieValidator;
@@ -27,25 +28,25 @@ public class MovieController {
         this.movieValidator = movieValidator;
     }
 
-    @PostMapping
+    @PostMapping("/director/{directorId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Movie insert(@RequestBody @Valid Movie movie) {
+    public MovieResponse insert(@PathVariable int directorId, @RequestBody @Valid Movie movie) {
         log.info("Handling Post /movie with " + movie);
-        return movieService.insert(movie);
+        return movieService.insert(directorId, movie);
     }
 
     @GetMapping
-    public List<Movie> getAll() {
+    public List<MovieResponse> getAll() {
         return movieService.getAll();
     }
 
     @GetMapping(value = "/{id}")
-    public Movie getById(@PathVariable int id) {
+    public MovieResponse getById(@PathVariable int id) {
         return movieService.getById(id);
     }
 
     @PutMapping("/{id}")
-    public Movie edit (@PathVariable int id, @RequestBody @Valid Movie movie) {
+    public MovieResponse edit (@PathVariable int id, @RequestBody @Valid Movie movie) {
         return movieService.edit(id, movie);
     }
 
@@ -62,7 +63,7 @@ public class MovieController {
         movieService.deleteById(id);
     }
 
-    @DeleteMapping("/clea")
+    @DeleteMapping("/clear")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void clearAll() {
         movieService.deleteAll();

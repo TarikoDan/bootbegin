@@ -1,17 +1,18 @@
 package com.example.bootbegin.services;
 
+import com.example.bootbegin.dto.response.MovieResponse;
 import com.example.bootbegin.entiti.Movie;
 
 import java.util.List;
 
 public interface IMovieService {
-    Movie insert(Movie movie);
+    MovieResponse insert(int id, Movie movie);
 
-    List<Movie> getAll();
+    List<MovieResponse> getAll();
 
-    Movie getById(int id);
+    MovieResponse getById(int id);
 
-    Movie edit (int id, Movie movie);
+    MovieResponse edit (int id, Movie movie);
 
     void deleteById (int id);
 
