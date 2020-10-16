@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.Query;
 public interface DirectorDAO extends JpaRepository<Director, Integer> {
 //    @Query("SELECT d FROM Director d where d.movies")
     @Query("SELECT m.director FROM Movie m where m.title=:movieTitle")
-    Director getDirectorByMoviesContainsMovieByTitle(String movieTitle);
+    Director getDirectorByMovieTitle(String movieTitle);
 }

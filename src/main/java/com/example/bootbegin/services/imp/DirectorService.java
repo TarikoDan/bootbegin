@@ -32,7 +32,7 @@ public class DirectorService implements IDirectorService {
 
     @Override
     public Director getByMovieTitle(String movieTitle) {
-        return directorDAO.getDirectorByMoviesContainsMovieByTitle(movieTitle);
+        return directorDAO.getDirectorByMovieTitle(movieTitle);
     }
 
     @Override
