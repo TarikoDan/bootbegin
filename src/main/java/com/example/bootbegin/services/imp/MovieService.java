@@ -2,17 +2,23 @@ package com.example.bootbegin.services.imp;
 
 import com.example.bootbegin.dao.DirectorDAO;
 import com.example.bootbegin.dao.MovieDao;
+import com.example.bootbegin.dto.response.MoviePageResponse;
 import com.example.bootbegin.dto.response.MovieResponse;
 import com.example.bootbegin.entiti.Director;
 import com.example.bootbegin.entiti.Movie;
 import com.example.bootbegin.exception.LongDurationException;
 import com.example.bootbegin.services.IMovieService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class MovieService implements IMovieService {
     @Autowired
@@ -35,9 +41,38 @@ public class MovieService implements IMovieService {
 
     @Override
     public List<MovieResponse> getAll() {
-        ArrayList<MovieResponse> movies = new ArrayList<>();
-        movieDao.findAll().forEach(movie -> movies.add(convertToResponse(movie)));
+        List<MovieResponse> movies = new ArrayList<>();
+        movieDao.findAll().forEach(movie ->
+                movies.add(convertToResponse(movie))
+        );
         return movies;
+    }
+
+    public MoviePageResponse getAll(PageRequest pageRequest) {
+        List<MovieResponse> movies = new ArrayList<>();
+        movieDao.findAll().forEach(movie ->
+                movies.add(convertToResponse(movie))
+        );
+        int start = (int) Math.min(pageRequest.getOffset(), movies.size() - 1);
+        int end = Math.min((start + pageRequest.getPageSize()), movies.size());
+        final Page<MovieResponse> moviesPage = new PageImpl<>(movies.subList(start, end), pageRequest, movies.size());
+        final List<MovieResponse> movieResponses = moviesPage.getContent();
+        final int totalElements = (int) moviesPage.getTotalElements();
+        final int totalPages = moviesPage.getTotalPages();
+        final int pageNumber = moviesPage.getNumber();
+        final int pageSize = moviesPage.getSize();
+
+        log.warn("Page " + ((pageNumber) + 1) + " of " + totalPages);
+        log.warn("There are " + pageSize + " Movies of " + totalElements + " (from " + ((pageSize * pageNumber) + 1) + " to " + pageSize * (pageNumber + 1) + ")");
+
+        return MoviePageResponse.builder()
+                .movies(movieResponses)
+                .pageNumber(pageNumber)
+                .pageSize(pageSize)
+                .totalElements(totalElements)
+                .totalPages(totalPages)
+                .build();
+
     }
 
     @Override
@@ -61,11 +96,11 @@ public class MovieService implements IMovieService {
             movie.setId(id);
             if (null == movie.getDirector()) {
                 movie.setDirector(movieDao.getOne(id).getDirector());
-            };
+            }
+            ;
             movieDao.saveAndFlush(movie);
             return convertToResponse(movie);
-        }
-        else {
+        } else {
             throw new NullPointerException("no such Movie with Id: " + id);
         }
     }
@@ -74,9 +109,9 @@ public class MovieService implements IMovieService {
     public void deleteById(int id) {
         if (movieDao.existsById(id)) {
             movieDao.deleteById(id);
-        }else {
-                throw new NullPointerException("no such Movie with Id: " + id);
-            }
+        } else {
+            throw new NullPointerException("no such Movie with Id: " + id);
+        }
     }
 
     @Override

@@ -1,11 +1,14 @@
 package com.example.bootbegin.controllers;
 
+import com.example.bootbegin.dto.response.MoviePageResponse;
 import com.example.bootbegin.dto.response.MovieResponse;
 import com.example.bootbegin.entiti.Movie;
 import com.example.bootbegin.services.IMovieService;
 import com.example.bootbegin.validators.MovieValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.WebDataBinder;
@@ -36,14 +39,17 @@ public class MovieController {
     }
 
     @GetMapping
-    public List<MovieResponse> getAll() {
-        return movieService.getAll();
+    public List<MovieResponse> getAll(){ return movieService.getAll(); }
+
+    @GetMapping("/pages")
+    public MoviePageResponse getAll(@RequestParam(defaultValue = "0") int page,
+                                    @RequestParam(defaultValue = "5") int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        return movieService.getAll(pageRequest);
     }
 
     @GetMapping(value = "/{id}")
-    public MovieResponse getById(@PathVariable int id) {
-        return movieService.getById(id);
-    }
+    public MovieResponse getById(@PathVariable int id) { return movieService.getById(id); }
 
     @GetMapping(value = "director/{directorId}")
     public List<MovieResponse> getByDirectorId(@PathVariable int directorId) {
