@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -16,15 +18,15 @@ import java.util.List;
 public class Director {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "director_id")
     int id;
     @NotBlank
     String name;
     @JsonFormat(pattern="yyyy-MM-dd")
     LocalDate birthDay;
 
-    @OneToMany
-    @JoinColumn(name = "director_id")
+    @OneToMany(mappedBy = "director")
     @JsonIgnore
-    List<Movie> movies;
+    Set<Movie> movies = new HashSet<Movie>();
 
 }

@@ -28,6 +28,12 @@ public class DirectorController {
         return directorService.getById(id);
     }
 
+    @GetMapping("movie/{movieTitle}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public Director getByMovieTitle (@PathVariable String movieTitle) {
+        return directorService.getByMovieTitle(movieTitle);
+    }
+
     @GetMapping
     @ResponseStatus(HttpStatus.FOUND)
     public List<Director> getAll() {

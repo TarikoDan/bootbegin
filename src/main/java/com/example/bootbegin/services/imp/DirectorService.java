@@ -31,6 +31,11 @@ public class DirectorService implements IDirectorService {
     }
 
     @Override
+    public Director getByMovieTitle(String movieTitle) {
+        return directorDAO.getDirectorByMoviesContainsMovieByTitle(movieTitle);
+    }
+
+    @Override
     public Director edit(int id, Director director) {
         if (directorDAO.existsById(id)){
             director.setId(id);

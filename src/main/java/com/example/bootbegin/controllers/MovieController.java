@@ -45,6 +45,11 @@ public class MovieController {
         return movieService.getById(id);
     }
 
+    @GetMapping(value = "director/{directorId}")
+    public List<MovieResponse> getByDirectorId(@PathVariable int directorId) {
+        return movieService.getByDirectorId(directorId);
+    }
+
     @PutMapping("/{id}")
     public MovieResponse edit (@PathVariable int id, @RequestBody @Valid Movie movie) {
         return movieService.edit(id, movie);

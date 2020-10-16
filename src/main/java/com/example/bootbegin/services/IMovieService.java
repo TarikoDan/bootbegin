@@ -12,6 +12,8 @@ public interface IMovieService {
 
     MovieResponse getById(int id);
 
+    List<MovieResponse> getByDirectorId(int directorId);
+
     MovieResponse edit (int id, Movie movie);
 
     void deleteById (int id);

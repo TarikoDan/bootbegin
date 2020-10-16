@@ -11,6 +11,8 @@ public interface IDirectorService {
 
     Director getById(int id);
 
+    Director getByMovieTitle(String movieTitle);
+
     Director edit(int id, Director director);
 
     void deleteById(int id);

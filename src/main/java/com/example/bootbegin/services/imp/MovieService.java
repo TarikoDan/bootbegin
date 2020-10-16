@@ -49,6 +49,13 @@ public class MovieService implements IMovieService {
     }
 
     @Override
+    public List<MovieResponse> getByDirectorId(int directorId) {
+        ArrayList<MovieResponse> movies = new ArrayList<>();
+        movieDao.findMoviesByDirectorId(directorId).forEach(movie -> movies.add(convertToResponse(movie)));
+        return movies;
+    }
+
+    @Override
     public MovieResponse edit(int id, Movie movie) {
         if (movieDao.existsById(id)) {
             movie.setId(id);
