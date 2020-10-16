@@ -2,20 +2,15 @@ package com.example.bootbegin.services.imp;
 
 import com.example.bootbegin.dto.request.UserRequest;
 import com.example.bootbegin.dto.response.UserResponse;
-import com.example.bootbegin.entiti.User;
+import com.example.bootbegin.entity.User;
 import com.example.bootbegin.repository.UserRepository;
 import com.example.bootbegin.services.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @RequiredArgsConstructor

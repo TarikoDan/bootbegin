@@ -1,7 +1,7 @@
 package com.example.bootbegin.validators;
 
 import com.example.bootbegin.dao.MovieDao;
-import com.example.bootbegin.entiti.Movie;
+import com.example.bootbegin.entity.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;

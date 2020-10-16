@@ -1,7 +1,7 @@
 package com.example.bootbegin.services.imp;
 
 import com.example.bootbegin.dao.DirectorDAO;
-import com.example.bootbegin.entiti.Director;
+import com.example.bootbegin.entity.Director;
 import com.example.bootbegin.services.IDirectorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

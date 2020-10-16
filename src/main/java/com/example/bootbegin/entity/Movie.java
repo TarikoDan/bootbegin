@@ -1,4 +1,4 @@
-package com.example.bootbegin.entiti;
+package com.example.bootbegin.entity;
 
 import com.example.bootbegin.validators.UniqueMovieTitle;
 import com.fasterxml.jackson.annotation.JsonIgnore;

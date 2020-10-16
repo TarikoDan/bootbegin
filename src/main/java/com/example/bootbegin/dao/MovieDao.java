@@ -1,6 +1,6 @@
 package com.example.bootbegin.dao;
 
-import com.example.bootbegin.entiti.Movie;
+import com.example.bootbegin.entity.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

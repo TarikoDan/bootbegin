@@ -2,8 +2,7 @@ package com.example.bootbegin.services;
 
 import com.example.bootbegin.dto.response.MoviePageResponse;
 import com.example.bootbegin.dto.response.MovieResponse;
-import com.example.bootbegin.entiti.Movie;
-import org.springframework.data.domain.Page;
+import com.example.bootbegin.entity.Movie;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;

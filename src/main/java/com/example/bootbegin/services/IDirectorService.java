@@ -1,6 +1,6 @@
 package com.example.bootbegin.services;
 
-import com.example.bootbegin.entiti.Director;
+import com.example.bootbegin.entity.Director;
 
 import java.util.List;
 

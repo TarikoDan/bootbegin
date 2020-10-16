@@ -1,6 +1,6 @@
 package com.example.bootbegin.controllers;
 
-import com.example.bootbegin.entiti.Director;
+import com.example.bootbegin.entity.Director;
 import com.example.bootbegin.services.IDirectorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
