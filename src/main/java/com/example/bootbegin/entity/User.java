@@ -22,8 +22,11 @@ public class User {
     String name;
     @NotBlank
     String surName;
+    @NotBlank
+    String password;
     @Column(nullable = false, unique = true)
     String nickName;
+    String role;
     LocalDate birthday;
 
     public void changeValues(User newUser) {

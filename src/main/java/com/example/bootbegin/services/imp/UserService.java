@@ -7,6 +7,7 @@ import com.example.bootbegin.repository.UserRepository;
 import com.example.bootbegin.services.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -18,11 +19,13 @@ import java.util.List;
 public class UserService implements IUserService {
     @Autowired
     private final UserRepository userRepo;
+    private PasswordEncoder passwordEncoder;  /* цей бін описаний в SecurityConfig*/
 
     @Override
     public UserResponse save(UserRequest user) {
-
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         User userDB = userRequestToUser(user);
+        /*Також перевірити чи починається роль з "ROLE_" */
         userRepo.saveAndFlush(userDB);      /*saving new User to DB*/
 
         return userToUserResp(userDB);
