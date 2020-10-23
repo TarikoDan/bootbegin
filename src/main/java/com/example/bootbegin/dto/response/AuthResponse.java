@@ -1,11 +1,8 @@
 package com.example.bootbegin.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@Setter
+@Getter
 @AllArgsConstructor
 public class AuthResponse {
     private String token;

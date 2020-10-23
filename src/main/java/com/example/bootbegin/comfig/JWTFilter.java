@@ -1,6 +1,7 @@
 package com.example.bootbegin.comfig;
 
 import com.example.bootbegin.services.imp.JWTService;
+import com.example.bootbegin.services.imp.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,10 +21,10 @@ import java.io.IOException;
 public class JWTFilter extends OncePerRequestFilter {
 
     @Autowired
-    JWTService jwtService;
+    private JWTService jwtService;
 
     @Autowired
-    UserDetailsService userDetailsService;
+    private UserService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

@@ -37,7 +37,6 @@ public class UserController {
     @PostMapping("/authenticate")
     @ResponseStatus(HttpStatus.CREATED)
     public AuthResponse generateJWT (@RequestBody @Valid AuthRequest authRequest) {
-        System.out.println(authRequest.getEmail());
         authenticationManager
                 .authenticate(
                         new UsernamePasswordAuthenticationToken(
