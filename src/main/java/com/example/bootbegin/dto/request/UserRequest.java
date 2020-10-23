@@ -15,7 +15,10 @@ public class UserRequest {
     @NotBlank
     private String surName;
     @NotBlank
+    String email;
+    @NotBlank
     String password;
+    String role;
     @NotBlank
     @JsonFormat(pattern = "yyyy-MM-dd")
     private String birthDay;

@@ -1,11 +1,16 @@
 package com.example.bootbegin.controllers;
 
+import com.example.bootbegin.dto.request.AuthRequest;
 import com.example.bootbegin.dto.request.UserRequest;
+import com.example.bootbegin.dto.response.AuthResponse;
 import com.example.bootbegin.dto.response.UserResponse;
 import com.example.bootbegin.services.IUserService;
+import com.example.bootbegin.services.imp.JWTService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,48 +22,47 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     @Autowired
-    public IUserService userService;
+    private IUserService userService;
+    @Autowired
+    private JWTService jwtService;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserResponse create (@RequestBody @Valid UserRequest user) {
+    public UserResponse register (@RequestBody @Valid UserRequest user) {
         return userService.save(user);
+    }
+
+    @PostMapping("/authenticate")
+    @ResponseStatus(HttpStatus.CREATED)
+    public AuthResponse generateJWT (@RequestBody @Valid AuthRequest authRequest) {
+        System.out.println(authRequest.getEmail());
+        authenticationManager
+                .authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                authRequest.getEmail(),authRequest.getPassword()
+                        ));
+        return new AuthResponse(jwtService.generateToken(authRequest.getEmail()));
     }
 
     @GetMapping
     public List<UserResponse> getAll(){return userService.getAll();}
 
-    @GetMapping("/{id}")
-    public UserResponse getById (@PathVariable int id) {
-        return userService.getById(id);
+    @GetMapping("/{email}")
+    public UserResponse getByEmail (@PathVariable String email) {
+        return userService.getByEmail(email);
     }
 
-    @PutMapping("/{id}")
-    public UserResponse edit (@PathVariable int id, @RequestBody @Valid UserRequest user) {
-        return userService.edit(id, user);
+    @PutMapping("/{email}")
+    public UserResponse edit (@PathVariable String email, @RequestBody @Valid UserRequest user) {
+        return userService.edit(email, user);
     }
 
-//    @DeleteMapping
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    public void clear() {
-//
-//    }
-
-    @DeleteMapping
+    @DeleteMapping("/{email}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Transactional
-    public void remove (@RequestParam String nickName) {
-        if (nickName != null) {
-            userService.remove(nickName);
-        }else {
-            userService.deleteAll();
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteById (@PathVariable int id ) {
-        userService.deleteById(id);
+    public void deleteById (@PathVariable String email ) {
+        userService.getByEmail(email);
     }
 
 }

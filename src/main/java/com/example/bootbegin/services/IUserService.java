@@ -10,14 +10,10 @@ public interface IUserService {
 
     List<UserResponse> getAll ();
 
-    UserResponse getById(int id);
+    UserResponse getByEmail(String email);
 
-    UserResponse edit(int id, UserRequest user);
+    UserResponse edit(String email, UserRequest user);
 
-    void deleteById (int id);
-
-    void deleteAll ();
-
-    void remove(String nickName);
+    void remove(String email);
 
 }

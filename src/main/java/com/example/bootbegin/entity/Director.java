@@ -18,14 +18,14 @@ public class Director {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "director_id")
-    int id;
+    private int id;
     @NotBlank
-    String name;
+    private String name;
     @JsonFormat(pattern="yyyy-MM-dd")
-    LocalDate birthDay;
+    private LocalDate birthDay;
 
     @OneToMany(mappedBy = "director")
     @JsonIgnore
-    Set<Movie> movies = new HashSet<Movie>();
+    private Set<Movie> movies = new HashSet<Movie>();
 
 }
