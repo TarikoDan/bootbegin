@@ -26,6 +26,6 @@ public class Director {
 
     @OneToMany(mappedBy = "director")
     @JsonIgnore
-    Set<Movie> movies = new HashSet<Movie>();
+    Set<Movie> movies = new HashSet<>();
 
 }
