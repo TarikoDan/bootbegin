@@ -16,6 +16,6 @@ public class UserResponse {
     @NonNull
     private String surName;
     @NonNull
-    private String nickName;
+    private String email;
     private DayOfWeek dayOfBirth;
 }

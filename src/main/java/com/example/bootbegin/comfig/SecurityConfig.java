@@ -1,5 +1,6 @@
 package com.example.bootbegin.comfig;
 
+import com.example.bootbegin.services.imp.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -15,28 +16,28 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    @Autowired
-//    UserDetailsService userDetailsService;
+    @Autowired
+    UserDetailsService userDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-//        return NoOpPasswordEncoder.getInstance();
-        return new BCryptPasswordEncoder();
+        return NoOpPasswordEncoder.getInstance(); /* for Basic AUTH */
+//        return new BCryptPasswordEncoder();  /* for Bearer-token AUTH */
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication().withUser("user").password("user").roles("USER")
         .and().withUser("admin").password("admin").roles("ADMIN")
-        .and().and().userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
+        .and().and().userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().cors().disable().authorizeRequests()
                 .antMatchers(HttpMethod.GET).authenticated()
-                .antMatchers(HttpMethod.POST).hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/users").anonymous()
+                .antMatchers(HttpMethod.POST, "/users/**").anonymous()
+                .antMatchers(HttpMethod.POST, "/directors").hasRole("ADMIN")
                 .and().httpBasic();
     }
 }

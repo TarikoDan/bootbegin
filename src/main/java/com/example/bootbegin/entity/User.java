@@ -22,17 +22,17 @@ public class User {
     String name;
     @NotBlank
     String surName;
+    @Column(nullable = false, unique = true)
+    String email;
     @NotBlank
     String password;
-    @Column(nullable = false, unique = true)
-    String nickName;
     String role;
     LocalDate birthday;
 
     public void changeValues(User newUser) {
         this.name = newUser.getName();
         this.surName = newUser.getSurName();
-        this.nickName = newUser.getNickName();
+        this.email = newUser.getEmail();
         this.birthday = newUser.getBirthday();
     }
 }
